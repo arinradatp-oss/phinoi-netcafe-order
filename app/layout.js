@@ -1,3 +1,5 @@
+import './globals.css';
+
 export const metadata = {
   title: 'ผีน้อย เน็ตคาเฟ่',
   description: 'ระบบสั่งอาหารและจับเวลาคิดเงินร้านเน็ตคาเฟ่',
