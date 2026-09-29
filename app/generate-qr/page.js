@@ -166,20 +166,26 @@ export default function GenerateQrPage() {
   return (
     <main
       style={{
-        fontFamily: 'sans-serif',
+        minHeight: '100vh',
         padding: '2rem',
         maxWidth: 480,
         margin: '0 auto',
       }}
     >
-      <h1 style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>เปิดเครื่อง</h1>
+      <h1
+        style={{
+          fontSize: '2rem',
+          marginBottom: '1.5rem',
+          color: 'var(--accent-blue)',
+        }}
+      >
+        เปิดเครื่อง
+      </h1>
 
       {errorMsg && (
         <div
+          className="alert-danger"
           style={{
-            background: '#fee2e2',
-            border: '2px solid #dc2626',
-            color: '#991b1b',
             borderRadius: 8,
             padding: '1rem',
             marginBottom: '1rem',
@@ -210,12 +216,13 @@ export default function GenerateQrPage() {
               setErrorMsg('');
             }}
             required
+            className="mono"
             style={{
               width: '100%',
               fontSize: '2rem',
               padding: '0.75rem',
               borderRadius: 8,
-              border: '2px solid #ccc',
+              border: '2px solid var(--border-subtle)',
               marginBottom: '1rem',
               boxSizing: 'border-box',
             }}
@@ -223,16 +230,12 @@ export default function GenerateQrPage() {
           <button
             type="submit"
             disabled={loading}
+            className="btn-glow"
             style={{
               width: '100%',
               fontSize: '1.5rem',
               padding: '1rem',
               borderRadius: 8,
-              border: 'none',
-              background: loading ? '#93c5fd' : '#2563eb',
-              color: '#fff',
-              fontWeight: 'bold',
-              cursor: loading ? 'default' : 'pointer',
             }}
           >
             {loading ? 'กำลังตรวจสอบ...' : 'เปิดเครื่อง'}
@@ -243,15 +246,14 @@ export default function GenerateQrPage() {
       {/* กล่องเตือน: มี session เปิดค้างอยู่ */}
       {existingSession && !qrResult && (
         <div
+          className="alert-warning"
           style={{
-            background: '#ffedd5',
-            border: '3px solid #ea580c',
             borderRadius: 10,
             padding: '1.25rem',
             marginBottom: '1rem',
           }}
         >
-          <p style={{ fontSize: '1.3rem', fontWeight: 'bold', color: '#9a3412', margin: 0 }}>
+          <p style={{ fontSize: '1.3rem', fontWeight: 'bold', margin: 0 }}>
             เครื่องนี้มีลูกค้าใช้งานอยู่ กรุณาปิดเวลาเดิมก่อน
           </p>
           <button
@@ -263,8 +265,8 @@ export default function GenerateQrPage() {
               padding: '0.9rem',
               borderRadius: 8,
               border: 'none',
-              background: '#ea580c',
-              color: '#fff',
+              background: 'var(--warning-border)',
+              color: '#1a1002',
               fontWeight: 'bold',
               cursor: 'pointer',
             }}
@@ -277,22 +279,23 @@ export default function GenerateQrPage() {
       {/* กล่องยืนยันปิดเวลาเดิม */}
       {showConfirm && confirmInfo && (
         <div
+          className="alert-danger"
           style={{
-            background: '#fee2e2',
-            border: '3px solid #dc2626',
             borderRadius: 10,
             padding: '1.25rem',
             marginBottom: '1rem',
           }}
         >
-          <p style={{ fontSize: '1.4rem', fontWeight: 'bold', color: '#991b1b', margin: '0 0 0.75rem' }}>
+          <p style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '0 0 0.75rem' }}>
             ยืนยันปิดเวลาเดิม
           </p>
-          <p style={{ fontSize: '1.2rem', margin: '0.25rem 0' }}>เครื่อง {seatNumber}</p>
-          <p style={{ fontSize: '1.2rem', margin: '0.25rem 0' }}>
+          <p className="mono" style={{ fontSize: '1.2rem', margin: '0.25rem 0' }}>
+            เครื่อง {seatNumber}
+          </p>
+          <p className="mono" style={{ fontSize: '1.2rem', margin: '0.25rem 0' }}>
             ใช้มาแล้ว {confirmInfo.minutesUsed} นาที
           </p>
-          <p style={{ fontSize: '1.2rem', margin: '0.25rem 0 1rem' }}>
+          <p className="mono" style={{ fontSize: '1.2rem', margin: '0.25rem 0 1rem' }}>
             ค่าเวลาเบื้องต้น {confirmInfo.timeCost.toFixed(2)} บาท
           </p>
           <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -304,8 +307,9 @@ export default function GenerateQrPage() {
                 fontSize: '1.1rem',
                 padding: '0.8rem',
                 borderRadius: 8,
-                border: '2px solid #999',
-                background: '#fff',
+                border: '2px solid var(--text-secondary)',
+                background: 'transparent',
+                color: 'var(--text-primary)',
                 cursor: closing ? 'default' : 'pointer',
               }}
             >
@@ -320,7 +324,7 @@ export default function GenerateQrPage() {
                 padding: '0.8rem',
                 borderRadius: 8,
                 border: 'none',
-                background: closing ? '#fca5a5' : '#dc2626',
+                background: closing ? '#7f1d1d' : 'var(--danger-border)',
                 color: '#fff',
                 fontWeight: 'bold',
                 cursor: closing ? 'default' : 'pointer',
@@ -335,23 +339,35 @@ export default function GenerateQrPage() {
       {/* ผลลัพธ์: QR code เมื่อเปิดเครื่องสำเร็จ */}
       {qrResult && (
         <div style={{ textAlign: 'center' }}>
-          <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
-              qrResult.url
-            )}`}
-            alt={`QR code เครื่อง ${qrResult.seatNumber}`}
-            width={300}
-            height={300}
-            style={{ maxWidth: '100%', height: 'auto', marginBottom: '1rem' }}
-          />
+          <div
+            style={{
+              display: 'inline-block',
+              background: '#ffffff',
+              padding: '1rem',
+              borderRadius: 12,
+              marginBottom: '1rem',
+              boxShadow: '0 0 20px rgba(0, 217, 255, 0.3)',
+            }}
+          >
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(
+                qrResult.url
+              )}`}
+              alt={`QR code เครื่อง ${qrResult.seatNumber}`}
+              width={300}
+              height={300}
+              style={{ maxWidth: '100%', height: 'auto', display: 'block' }}
+            />
+          </div>
           <p style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '0 0 0.5rem' }}>
             เครื่อง {qrResult.seatNumber} · เริ่มจับเวลาแล้ว
           </p>
           <p
+            className="mono"
             style={{
               fontSize: '1rem',
               wordBreak: 'break-all',
-              color: '#2563eb',
+              color: 'var(--accent-blue)',
               margin: '0 0 0.75rem',
             }}
           >
@@ -359,12 +375,12 @@ export default function GenerateQrPage() {
           </p>
           <button
             onClick={handleCopyLink}
+            className="card"
             style={{
               fontSize: '0.95rem',
               padding: '0.5rem 1rem',
               borderRadius: 6,
-              border: '1px solid #999',
-              background: '#f3f4f6',
+              color: 'var(--text-primary)',
               cursor: 'pointer',
               marginBottom: '1.5rem',
             }}
@@ -374,23 +390,19 @@ export default function GenerateQrPage() {
 
           <button
             onClick={resetAll}
+            className="btn-glow"
             style={{
               width: '100%',
               fontSize: '1.3rem',
               padding: '0.9rem',
               borderRadius: 8,
-              border: 'none',
-              background: '#2563eb',
-              color: '#fff',
-              fontWeight: 'bold',
-              cursor: 'pointer',
               marginBottom: '1rem',
             }}
           >
             เปิดเครื่องอื่น
           </button>
 
-          <p style={{ fontSize: '0.85rem', color: '#666' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
             ลิงก์/QR ของแต่ละเครื่องเหมือนเดิมทุกรอบ พิมพ์ติดไว้ที่เครื่องถาวรได้เลย
           </p>
         </div>
@@ -398,4 +410,3 @@ export default function GenerateQrPage() {
     </main>
   );
 }
-
