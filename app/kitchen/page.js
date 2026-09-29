@@ -120,15 +120,15 @@ export default function KitchenPage() {
   };
 
   return (
-    <main style={{ fontFamily: 'sans-serif', padding: '1.25rem', minHeight: '100vh', background: '#f3f4f6' }}>
-      <h1 style={{ fontSize: '1.8rem', margin: '0 0 1rem' }}>จอครัว / เคาน์เตอร์</h1>
+    <main style={{ padding: '1.25rem', minHeight: '100vh' }}>
+      <h1 style={{ fontSize: '1.8rem', margin: '0 0 1rem', color: 'var(--accent-blue)' }}>
+        จอครัว / เคาน์เตอร์
+      </h1>
 
       {errorMsg && (
         <div
+          className="alert-danger"
           style={{
-            background: '#fee2e2',
-            border: '2px solid #dc2626',
-            color: '#991b1b',
             borderRadius: 8,
             padding: '0.75rem 1rem',
             marginBottom: '1rem',
@@ -142,7 +142,7 @@ export default function KitchenPage() {
       {loading && <p style={{ fontSize: '1.2rem' }}>กำลังโหลด...</p>}
 
       {!loading && orders.length === 0 && (
-        <p style={{ fontSize: '1.3rem', color: '#6b7280', marginTop: '2rem' }}>
+        <p style={{ fontSize: '1.3rem', color: 'var(--text-secondary)', marginTop: '2rem' }}>
           ยังไม่มีออเดอร์ค้างอยู่
         </p>
       )}
@@ -163,20 +163,24 @@ export default function KitchenPage() {
             <div
               key={order.id}
               style={{
-                background: isCooking ? '#fef3c7' : '#ffffff',
-                border: isCooking ? '3px solid #f59e0b' : '3px solid #d1d5db',
+                background: isCooking ? 'var(--warning-bg)' : 'var(--bg-card)',
+                border: isCooking ? '3px solid var(--warning-border)' : '1px solid var(--border-subtle)',
                 borderRadius: 12,
                 padding: '1rem',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '0.6rem',
+                boxShadow: isCooking ? '0 0 16px rgba(245, 158, 11, 0.25)' : 'none',
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ fontSize: '2rem', fontWeight: 'bold' }}>
+                <span
+                  className="mono"
+                  style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--accent-blue)' }}
+                >
                   เครื่อง {order.seat_number}
                 </span>
-                <span style={{ fontSize: '1rem', color: '#6b7280' }}>
+                <span className="mono" style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>
                   {formatTime(order.created_at)}
                 </span>
               </div>
@@ -200,10 +204,11 @@ export default function KitchenPage() {
                       padding: '0.75rem',
                       borderRadius: 8,
                       border: 'none',
-                      background: isPending ? '#fcd34d' : '#f59e0b',
-                      color: '#fff',
+                      background: isPending ? '#78350f' : 'var(--warning-border)',
+                      color: '#1a1002',
                       fontWeight: 'bold',
                       cursor: isPending ? 'default' : 'pointer',
+                      boxShadow: isPending ? 'none' : '0 0 10px rgba(245, 158, 11, 0.4)',
                     }}
                   >
                     เริ่มทำ
@@ -218,10 +223,11 @@ export default function KitchenPage() {
                     padding: '0.75rem',
                     borderRadius: 8,
                     border: 'none',
-                    background: isPending ? '#86efac' : '#16a34a',
-                    color: '#fff',
+                    background: isPending ? '#14532d' : 'var(--success-border)',
+                    color: '#04140b',
                     fontWeight: 'bold',
                     cursor: isPending ? 'default' : 'pointer',
+                    boxShadow: isPending ? 'none' : '0 0 10px rgba(34, 197, 94, 0.4)',
                   }}
                 >
                   ส่งถึงเครื่องแล้ว
