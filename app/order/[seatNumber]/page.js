@@ -271,27 +271,34 @@ export default function OrderPage({ params }) {
         <p style={{ fontSize: '1.5rem', textAlign: 'center', padding: '0 1.5rem' }}>
           ขอบคุณที่ใช้บริการ กรุณาชำระเงินที่เคาน์เตอร์
           <br />
-          <strong style={{ fontSize: '2rem' }}>ยอดรวม {closedInfo.total.toFixed(2)} บาท</strong>
+          <strong className="mono" style={{ fontSize: '2rem', color: 'var(--accent-blue)' }}>
+            ยอดรวม {closedInfo.total.toFixed(2)} บาท
+          </strong>
         </p>
       </main>
     );
   }
 
   return (
-    <main style={{ fontFamily: 'sans-serif', paddingBottom: cart.length > 0 ? '6.5rem' : '1rem' }}>
+    <main style={{ paddingBottom: cart.length > 0 ? '6.5rem' : '1rem' }}>
       {/* แถบบน: เลขเครื่อง + เวลา + ปุ่มเรียกเก็บเงิน */}
       <div
+        className="card"
         style={{
           position: 'sticky',
           top: 0,
-          background: '#111827',
-          color: '#fff',
+          borderRadius: 0,
+          borderLeft: 'none',
+          borderRight: 'none',
+          borderTop: 'none',
           padding: '0.9rem 1rem',
           zIndex: 10,
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '1.3rem', fontWeight: 'bold' }}>เครื่อง {seatNumber}</span>
+          <span style={{ fontSize: '1.3rem', fontWeight: 'bold', color: 'var(--accent-blue)' }}>
+            เครื่อง {seatNumber}
+          </span>
           <button
             onClick={handleOpenBill}
             disabled={billLoading}
@@ -300,7 +307,7 @@ export default function OrderPage({ params }) {
               padding: '0.5rem 0.9rem',
               borderRadius: 6,
               border: 'none',
-              background: '#dc2626',
+              background: billLoading ? '#7f1d1d' : 'var(--danger-border)',
               color: '#fff',
               fontWeight: 'bold',
               cursor: billLoading ? 'default' : 'pointer',
@@ -310,7 +317,7 @@ export default function OrderPage({ params }) {
           </button>
         </div>
         {billing && (
-          <p style={{ margin: '0.4rem 0 0', fontSize: '0.95rem', color: '#d1d5db' }}>
+          <p className="mono" style={{ margin: '0.4rem 0 0', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
             ใช้งานมาแล้ว {billing.hours} ชม. {billing.minutes} นาที · ค่าเวลาตอนนี้{' '}
             {billing.timeCost.toFixed(2)} บาท
           </p>
@@ -319,11 +326,9 @@ export default function OrderPage({ params }) {
 
       {errorMsg && (
         <div
+          className="alert-danger"
           style={{
             margin: '0.75rem 1rem',
-            background: '#fee2e2',
-            border: '2px solid #dc2626',
-            color: '#991b1b',
             borderRadius: 8,
             padding: '0.75rem 1rem',
             fontSize: '1rem',
@@ -335,11 +340,9 @@ export default function OrderPage({ params }) {
 
       {orderSentMsg && (
         <div
+          className="alert-success"
           style={{
             margin: '0.75rem 1rem',
-            background: '#dcfce7',
-            border: '2px solid #16a34a',
-            color: '#166534',
             borderRadius: 8,
             padding: '0.75rem 1rem',
             fontSize: '1.05rem',
@@ -358,21 +361,20 @@ export default function OrderPage({ params }) {
           gap: '0.5rem',
           overflowX: 'auto',
           padding: '0.75rem 1rem',
-          borderBottom: '1px solid #e5e7eb',
+          borderBottom: '1px solid var(--border-subtle)',
         }}
       >
         {categories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setActiveCategoryId(cat.id)}
+            className={activeCategoryId === cat.id ? 'btn-glow' : 'card'}
             style={{
               flexShrink: 0,
               fontSize: '1.05rem',
               padding: '0.6rem 1.1rem',
               borderRadius: 999,
-              border: activeCategoryId === cat.id ? 'none' : '1px solid #d1d5db',
-              background: activeCategoryId === cat.id ? '#2563eb' : '#fff',
-              color: activeCategoryId === cat.id ? '#fff' : '#111827',
+              color: activeCategoryId === cat.id ? undefined : 'var(--text-primary)',
               fontWeight: activeCategoryId === cat.id ? 'bold' : 'normal',
               cursor: 'pointer',
             }}
@@ -385,7 +387,7 @@ export default function OrderPage({ params }) {
       {/* รายการเมนู */}
       <div style={{ padding: '0.5rem 1rem' }}>
         {itemsInActiveCategory.length === 0 && (
-          <p style={{ color: '#6b7280', textAlign: 'center', marginTop: '2rem' }}>
+          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', marginTop: '2rem' }}>
             ไม่มีเมนูในหมวดนี้
           </p>
         )}
@@ -397,12 +399,12 @@ export default function OrderPage({ params }) {
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '1rem 0',
-              borderBottom: '1px solid #f0f0f0',
+              borderBottom: '1px solid var(--border-subtle)',
             }}
           >
             <div>
               <p style={{ fontSize: '1.15rem', fontWeight: 'bold', margin: 0 }}>{item.name}</p>
-              <p style={{ fontSize: '1rem', color: '#6b7280', margin: '0.2rem 0 0' }}>
+              <p className="mono" style={{ fontSize: '1rem', color: 'var(--text-secondary)', margin: '0.2rem 0 0' }}>
                 {Number(item.price).toFixed(2)} บาท
               </p>
             </div>
@@ -414,7 +416,7 @@ export default function OrderPage({ params }) {
               >
                 −
               </button>
-              <span style={{ fontSize: '1.1rem', width: '1.5rem', textAlign: 'center' }}>
+              <span className="mono" style={{ fontSize: '1.1rem', width: '1.5rem', textAlign: 'center' }}>
                 {getDraftQty(item.id)}
               </span>
               <button
@@ -426,17 +428,13 @@ export default function OrderPage({ params }) {
               </button>
               <button
                 onClick={() => addToCart(item)}
+                className="btn-glow"
                 style={{
                   marginLeft: '0.4rem',
                   fontSize: '1.4rem',
                   width: '2.75rem',
                   height: '2.75rem',
                   borderRadius: '50%',
-                  border: 'none',
-                  background: '#2563eb',
-                  color: '#fff',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
                 }}
                 aria-label={`เพิ่ม ${item.name} ลงตะกร้า`}
               >
@@ -455,31 +453,28 @@ export default function OrderPage({ params }) {
             bottom: 0,
             left: 0,
             right: 0,
-            background: '#111827',
-            color: '#fff',
+            background: 'var(--bg-card)',
+            borderTop: '1px solid var(--border-subtle)',
+            color: 'var(--text-primary)',
             padding: '0.9rem 1rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '1rem',
-            boxShadow: '0 -2px 10px rgba(0,0,0,0.2)',
+            boxShadow: '0 -4px 20px rgba(0, 217, 255, 0.15)',
           }}
         >
-          <div style={{ fontSize: '1.05rem' }}>
+          <div className="mono" style={{ fontSize: '1.05rem' }}>
             <strong>{cartCount} รายการ</strong> · {cartTotal.toFixed(2)} บาท
           </div>
           <button
             onClick={handleSendOrder}
             disabled={sending}
+            className="btn-glow"
             style={{
               fontSize: '1.15rem',
               padding: '0.8rem 1.4rem',
               borderRadius: 8,
-              border: 'none',
-              background: sending ? '#93c5fd' : '#16a34a',
-              color: '#fff',
-              fontWeight: 'bold',
-              cursor: sending ? 'default' : 'pointer',
             }}
           >
             {sending ? 'กำลังส่ง...' : 'ส่งออเดอร์'}
@@ -490,7 +485,9 @@ export default function OrderPage({ params }) {
       {/* รายการในตะกร้า (ให้ลบได้) แสดงเหนือแถบตะกร้าเมื่อมีรายการ */}
       {cart.length > 0 && (
         <div style={{ padding: '0 1rem 6rem' }}>
-          <p style={{ fontSize: '1rem', color: '#6b7280', marginTop: '1.5rem' }}>ในตะกร้า:</p>
+          <p style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginTop: '1.5rem' }}>
+            ในตะกร้า:
+          </p>
           {cart.map((line) => (
             <div
               key={line.key}
@@ -505,14 +502,14 @@ export default function OrderPage({ params }) {
                 {line.name} × {line.quantity}
               </span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <span style={{ fontSize: '1rem' }}>
+                <span className="mono" style={{ fontSize: '1rem' }}>
                   {(line.price * line.quantity).toFixed(2)} บาท
                 </span>
                 <button
                   onClick={() => removeCartLine(line.key)}
                   style={{
                     fontSize: '0.9rem',
-                    color: '#dc2626',
+                    color: 'var(--danger-border)',
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
@@ -533,12 +530,16 @@ export default function OrderPage({ params }) {
             <p style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '0 0 1rem' }}>
               ยืนยันเรียกเก็บเงิน
             </p>
-            <p style={modalLineStyle}>
+            <p className="mono" style={modalLineStyle}>
               เวลาที่ใช้: {billInfo.hours} ชม. {billInfo.minutes} นาที
             </p>
-            <p style={modalLineStyle}>ค่าเวลา: {billInfo.timeCost.toFixed(2)} บาท</p>
-            <p style={modalLineStyle}>ค่าอาหาร: {billInfo.foodCost.toFixed(2)} บาท</p>
-            <p style={{ ...modalLineStyle, fontWeight: 'bold', fontSize: '1.2rem' }}>
+            <p className="mono" style={modalLineStyle}>
+              ค่าเวลา: {billInfo.timeCost.toFixed(2)} บาท
+            </p>
+            <p className="mono" style={modalLineStyle}>
+              ค่าอาหาร: {billInfo.foodCost.toFixed(2)} บาท
+            </p>
+            <p className="mono" style={{ ...modalLineStyle, fontWeight: 'bold', fontSize: '1.2rem' }}>
               ยอดรวม: {billInfo.total.toFixed(2)} บาท
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
@@ -550,8 +551,9 @@ export default function OrderPage({ params }) {
                   fontSize: '1.1rem',
                   padding: '0.8rem',
                   borderRadius: 8,
-                  border: '2px solid #999',
-                  background: '#fff',
+                  border: '2px solid var(--text-secondary)',
+                  background: 'transparent',
+                  color: 'var(--text-primary)',
                   cursor: confirming ? 'default' : 'pointer',
                 }}
               >
@@ -566,7 +568,7 @@ export default function OrderPage({ params }) {
                   padding: '0.8rem',
                   borderRadius: 8,
                   border: 'none',
-                  background: confirming ? '#fca5a5' : '#dc2626',
+                  background: confirming ? '#7f1d1d' : 'var(--danger-border)',
                   color: '#fff',
                   fontWeight: 'bold',
                   cursor: confirming ? 'default' : 'pointer',
@@ -583,11 +585,11 @@ export default function OrderPage({ params }) {
 }
 
 const fullScreenCenterStyle = {
-  fontFamily: 'sans-serif',
   minHeight: '100vh',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  color: 'var(--text-primary)',
 };
 
 const qtyBtnStyle = {
@@ -595,15 +597,16 @@ const qtyBtnStyle = {
   height: '2rem',
   fontSize: '1.1rem',
   borderRadius: 6,
-  border: '1px solid #d1d5db',
-  background: '#f9fafb',
+  border: '1px solid var(--border-subtle)',
+  background: 'var(--bg-card)',
+  color: 'var(--text-primary)',
   cursor: 'pointer',
 };
 
 const modalOverlayStyle = {
   position: 'fixed',
   inset: 0,
-  background: 'rgba(0,0,0,0.5)',
+  background: 'rgba(0,0,0,0.7)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -612,12 +615,14 @@ const modalOverlayStyle = {
 };
 
 const modalBoxStyle = {
-  background: '#fff',
+  background: 'var(--bg-card)',
+  color: 'var(--text-primary)',
   borderRadius: 12,
   padding: '1.5rem',
   width: '100%',
   maxWidth: 380,
-  border: '3px solid #dc2626',
+  border: '3px solid var(--danger-border)',
+  boxShadow: '0 0 24px rgba(239, 68, 68, 0.3)',
 };
 
 const modalLineStyle = {
