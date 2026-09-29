@@ -1,0 +1,114 @@
+:root {
+  --bg-primary: #0a0e17;
+  --bg-card: #131a2b;
+  --bg-card-hover: #1a2338;
+  --border-subtle: rgba(0, 217, 255, 0.25);
+  --border-subtle-purple: rgba(168, 85, 247, 0.25);
+
+  --accent-blue: #00d9ff;
+  --accent-purple: #a855f7;
+  --accent-gradient: linear-gradient(135deg, #00d9ff 0%, #a855f7 100%);
+  --accent-gradient-dim: linear-gradient(135deg, #0891a8 0%, #6b21a8 100%);
+
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+
+  --danger-bg: #3f0d0d;
+  --danger-border: #ef4444;
+  --danger-text: #fecaca;
+
+  --warning-bg: #3f2a0a;
+  --warning-border: #f59e0b;
+  --warning-text: #fde68a;
+
+  --success-bg: #0a3320;
+  --success-border: #22c55e;
+  --success-text: #bbf7d0;
+
+  --font-body: system-ui, -apple-system, 'Segoe UI', 'Noto Sans Thai', 'TH Sarabun New',
+    Sarabun, sans-serif;
+  --font-mono: 'Courier New', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent-blue);
+}
+
+button {
+  font-family: inherit;
+}
+
+input {
+  font-family: inherit;
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+/* ปุ่มหลัก: gradient ฟ้า-ม่วง + glow */
+.btn-glow {
+  background: var(--accent-gradient);
+  color: #06111f;
+  border: none;
+  font-weight: bold;
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.35), 0 0 24px rgba(168, 85, 247, 0.25);
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-glow:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 0 16px rgba(0, 217, 255, 0.5), 0 0 32px rgba(168, 85, 247, 0.35);
+}
+
+.btn-glow:disabled {
+  background: var(--accent-gradient-dim);
+  box-shadow: none;
+  cursor: default;
+  color: #cbd5e1;
+}
+
+/* การ์ด/กล่องทั่วไป */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* กล่องเตือน/แจ้งเตือน — คงโทนแดง/ส้ม/เขียวไว้ แต่เข้มขึ้นให้เข้ากับพื้นมืด */
+.alert-danger {
+  background: var(--danger-bg);
+  border: 2px solid var(--danger-border);
+  color: var(--danger-text);
+}
+
+.alert-warning {
+  background: var(--warning-bg);
+  border: 3px solid var(--warning-border);
+  color: var(--warning-text);
+}
+
+.alert-success {
+  background: var(--success-bg);
+  border: 2px solid var(--success-border);
+  color: var(--success-text);
+}
